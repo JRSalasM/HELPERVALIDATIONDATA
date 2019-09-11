@@ -1,64 +1,81 @@
 let data = {
     name:{
-        value:'JoseS',
-        validator:'required|length:5'
+        value:'jose Salas',
+        validator: 'required|string'
     },
     lastname:{
-        value:'sadaad',
-        validator:'required'
+        value: 'Salas',
+        validator: 'required'
     },
     email:{
-        value:'jose@gmail.com',
-        validator:'required|isemail'
+        value: 'jsalas@gmail.com',
+        validator: ''
+    },
+    phone:{
+        value: '922172541',
+        validator: 'required|number|length:9'
+    },
+    role:{
+        value: 'users',
+        validator: 'required|different:admin,user'
     }
 };
-let valid = {
-    valid: false,
-    errors:[],
-    log:[],
-}
 const validation = (data) => {
     valid = {
         valid: false,
-        errors:[],
-        log:[],
+        errors: new Object(),
+        log:new Object(),
     }
-    Object.keys(data).map((value,index)=>{
-        if(data[value].hasOwnProperty('validator')){
-            let { validator } = data[value]
-            if(validator !== ''){
-                let validations = validator.split('|');
-                validations.map((v,i)=>{
-                    if(v.includes(':')){
-                        let temp = v.split(':');                        
-                        if(temp.length !== 2){
-                            valid.log.push(`${temp} unrecognized`)
+    try{
+        Object.keys(data).map((value,index)=>{
+            if(data[value].hasOwnProperty('validator')){
+                let { validator } = data[value]
+                if(validator !== ''){
+                    let validations = validator.split('|');
+                    let err = new Object(),
+                        log = new Object();
+                    validations.map((v,i)=>{
+                        if(v.includes(':')){
+                            let temp = v.split(':');                        
+                            if(temp.length !== 2){
+                                log[temp] = (`${temp} unrecognized`)
+                            }else{
+                                validations[i] = { type : temp[0], rule: temp[1] }
+                            }                        
                         }else{
-                            validations[i] = { type : temp[0], rule: temp[1] }
-                        }                        
+                            validations[i] = { type: v }
+                        }
+                    });
+                    if(data[value].value === '' &&  validations.filter(r => r.type === 'required' ).length === 0){
+                        console.log(`${value} no es requerido`);
                     }else{
-                        validations[i] = { type: v }
-                    }
-                });
-                validations.map((val)=>{
-                    let result = typeValidate(val,data[value].value);
-                    if(!result.valid){
-                        if(result.hasOwnProperty('err'))
-                            valid.errors.push(`${value} ${result.err}`);
-                        if(result.hasOwnProperty('log'))
-                            valid.log.push(`${value} ${result.log}`);
-                    }
-                })
+                        validations.map((val)=>{           
+                            let result = typeValidate(val,data[value].value);
+                            if(!result.valid){
+                                if(result.hasOwnProperty('err'))
+                                    err[val.type] = (`${value} is ${data[value].value || null}, ${result.err}`);
+                                if(result.hasOwnProperty('log'))
+                                    log[val.type] = (`${value} ${result.log}`);
+                            }
+                        });   
+                    }                
+                    if( Object.keys(err).length > 0)
+                        valid.errors[value] = {...err};
+                    if( Object.keys(log).length > 0)
+                        valid.log[value] = {...log};
+                }
             }
-        }        
-    });    
-    Object.keys(valid).map((value)=>{
-        if(Array.isArray(valid[value]) && valid[value].length === 0)            
+        });    
+        Object.keys(valid).map((value)=>{
+            if(Object.keys(valid[value]).length === 0 && value !== 'valid')            
                 delete valid[value]; 
-    })
-    if(!valid.hasOwnProperty('errors') && !valid.hasOwnProperty('errors'))
-        valid.valid = true;
-
+        })
+        if(!valid.hasOwnProperty('errors') && !valid.hasOwnProperty('errors'))
+            valid.valid = true;
+    }
+    catch(e){
+        valid.errors.catch = e.toString();
+    }    
     return valid;
 }
 
@@ -80,7 +97,32 @@ const typeValidate = (key,value) => {
         case 'length':
             result = Vlength(value,key.rule);
             break;
+        case 'number':
+            result = Vnumber(value);
+            break;
+        case 'string':
+            result = Vstring(value);
+            break;
+        case 'uppecase':
+            result = Vuppecase(value);
+            break;
+        case 'lowercase':
+            result = Vlowercase(value);
+            break;
+        case 'alphanumeric':
+            result = Valphanumeric(value);
+            break;
+        case 'containt':
+            result = Vcontaint(value,key.rule);
+            break;
+        case 'different':
+                result = Vdifferent(value,key.rule);
+                break;
+        case 'regex':
+            result = Vregex(value,key.rule);
+            break;            
         default:
+            result = { valid: false, log: `not validated, ${key.type} unrecognized ` }
             break;
     }
     return result;
@@ -125,6 +167,72 @@ const Vlength = (value, condicional) => {
     }
     if(value.toString().length !== parseInt(condicional)){
         return { valid: false, err: `must be ${condicional} characteres` }
+    }
+    return { valid: true};    
+}
+
+const Vregex = (value, condicional) => {
+    let regex_customize = new RegExp(condicional);
+    if(!regex_customize.test(value)){
+        return { valid: false, err: `must be ${condicional} format` }
+    }
+    return { valid: true};    
+}
+
+const Vnumber = (value) => {
+    let regex_number = new RegExp('^[1-9]+$');
+    if(!regex_number.test(value)){
+        return { valid: false, err: `must be type numeric` }
+    }
+    return { valid: true};    
+}
+
+const Vstring = (value) => {
+    let regex_number = new RegExp('^[a-zA-Z ]+$');
+    if(!regex_number.test(value)){
+        return { valid: false, err: `must be type string` }
+    }
+    return { valid: true};    
+}
+
+const Vuppecase = (value) => {
+    let regex_number = new RegExp('^[A-Z ]+$');
+    if(!regex_number.test(value)){
+        return { valid: false, err: `must be upper case` }
+    }
+    return { valid: true};
+}
+
+const Vlowercase = (value) => {
+    let regex_number = new RegExp('^[a-z ]+$');
+    if(!regex_number.test(value)){
+        return { valid: false, err: `must be lower case` }
+    }
+    return { valid: true};    
+}
+
+const Valphanumeric = (value) => {
+    let regex_number = new RegExp('^[a-zA-Z1-9 ]+$');
+    if(!regex_number.test(value)){
+        return { valid: false, err: `must be lower case` }
+    }
+    return { valid: true};    
+}
+
+const Vcontaint = (value, condicional) => {
+    let params = condicional.split(',');
+    let temp = params.filter( v => v === value);
+    if(temp.length === 0){
+        return { valid: false, err: `must be equal to ${condicional} value` }
+    }
+    return { valid: true};    
+}
+
+const Vdifferent = (value, condicional) => {
+    let params = condicional.split(',');
+    let temp = params.filter( v => v === value);
+    if(temp.length !== 0){
+        return { valid: false, err: `must be different to ${condicional} value` }
     }
     return { valid: true};    
 }
