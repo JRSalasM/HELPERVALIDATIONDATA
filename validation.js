@@ -1,10 +1,10 @@
 let data = {
     name:{
-        value:'Jose',
-        validator:'required|min:10'
+        value:'JoseS',
+        validator:'required|length:5'
     },
     lastname:{
-        value:'asd',
+        value:'sadaad',
         validator:'required'
     },
     email:{
@@ -43,10 +43,10 @@ const validation = (data) => {
                 validations.map((val)=>{
                     let result = typeValidate(val,data[value].value);
                     if(!result.valid){
-                        if(valid.hasOwnProperty('err'))
+                        if(result.hasOwnProperty('err'))
                             valid.errors.push(`${value} ${result.err}`);
-                        if(valid.hasOwnProperty('log'))
-                            valid.errors.push(`${value} ${result.err}`);
+                        if(result.hasOwnProperty('log'))
+                            valid.log.push(`${value} ${result.log}`);
                     }
                 })
             }
@@ -66,11 +66,20 @@ const typeValidate = (key,value) => {
     let result = new Object();
     switch (key.type) {
         case 'required':
-            result =Vrequired(value);
+            result = Vrequired(value);
             break;
         case 'isemail':
-            result =Visemail(value);
-            break;  
+            result = Visemail(value);
+            break;
+        case 'min':
+            result = Vmin(value,key.rule);
+            break;
+        case 'max':
+            result = Vmax(value,key.rule);
+            break;
+        case 'length':
+            result = Vlength(value,key.rule);
+            break;
         default:
             break;
     }
@@ -90,13 +99,32 @@ const Visemail = (value) => {
     return { valid: true};    
 }
 
-const Vmin = (value, condicional,property) => {
+const Vmin = (value, condicional) => {
     if(isNaN(condicional)){
-        valid.log(`, min validation requiered a type numeric as parameter`);
-        return { valid: false, log: "no validated" }
+        return { valid: false, log: "min validation requiered a type numeric as parameter" }
     }
-    if(value.toString().length < condicional){
+    if(value.toString().length < parseInt(condicional)){
         return { valid: false, err: `must be min ${condicional} characteres` }
+    }
+    return { valid: true};    
+}
+
+const Vmax = (value, condicional) => {
+    if(isNaN(condicional)){
+        return { valid: false, log: "max validation requiered a type numeric as parameter" }
+    }
+    if(value.toString().length > parseInt(condicional)){
+        return { valid: false, err: `must be max ${condicional} characteres` }
+    }
+    return { valid: true};    
+}
+
+const Vlength = (value, condicional) => {
+    if(isNaN(condicional)){
+        return { valid: false, log: "length validation requiered a type numeric as parameter" }
+    }
+    if(value.toString().length !== parseInt(condicional)){
+        return { valid: false, err: `must be ${condicional} characteres` }
     }
     return { valid: true};    
 }
