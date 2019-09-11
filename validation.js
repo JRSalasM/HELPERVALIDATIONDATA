@@ -1,3 +1,4 @@
+//https://www.minifier.org/
 export const validation = (values,rulesValidation) => {
     let data = {};
     Object.keys(values).forEach((value) => {
