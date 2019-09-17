@@ -165,7 +165,7 @@ const Vregex = (value, condicional) => {
 }
 
 const Vnumeric = (value) => {
-    let regex_number = new RegExp('^[1-9]+$');
+    let regex_number = new RegExp('^[0-9]+(\.[0-9]{0,})?$');
     if(!regex_number.test(value)){
         return { valid: false, err: `must be type numeric` }
     }
