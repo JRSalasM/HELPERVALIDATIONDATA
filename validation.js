@@ -1,5 +1,5 @@
 //https://www.minifier.org/
-export const validation = (values,rulesValidation) => {
+const validation = (values,rulesValidation) => {
     let data = {};
     Object.keys(values).forEach((value) => {
         data[value] = {
@@ -45,11 +45,11 @@ export const validation = (values,rulesValidation) => {
                                     log[val.type] = (`${value} ${result.log}`);
                             }
                         });   
-                    }                
+                    }
                     if( Object.keys(err).length > 0)
-                        valid.errors[value] = {...err};
+                        valid.errors[value] = err;
                     if( Object.keys(log).length > 0)
-                        valid.log[value] = {...log};
+                        valid.log[value] = log;
                 }
             }
         });    
@@ -68,7 +68,7 @@ const typeValidate = (key,value) => {
         case 'required':
             result = Vrequired(value);
             break;
-        case 'isemail':
+        case 'email':
             result = Visemail(value);
             break;
         case 'min':
@@ -80,7 +80,7 @@ const typeValidate = (key,value) => {
         case 'length':
             result = Vlength(value,key.rule);
             break;
-        case 'numeric':
+        case 'integer':
             result = Vnumeric(value);
             break;
         case 'string':
@@ -112,6 +112,7 @@ const typeValidate = (key,value) => {
 }
 
 const Vrequired = (value) => {
+    //field: 'required',
     if(!value)
         return { valid: false, err: 'is required' }
     return { valid: true};    
@@ -221,3 +222,5 @@ const Vdifferent = (value, condicional) => {
     }
     return { valid: true};    
 }
+
+module.exports = validation;
