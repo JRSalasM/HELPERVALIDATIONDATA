@@ -64,17 +64,29 @@ console.log(a);
 ```
 
 ### Tipo numérico
+| Opcional | Descripción | type |
+| ------ | ------ | ------ | 
+| Cantidad | Indica el numeró de caracteres | integer |
+| Rango | Indica el numeró menor y menor de caracteres separados por < , > | integer |
 ```sh
 {
-    field: 'integer'
+    fieldA: 'integer',
+    fieldB: 'integer:5',
+    fieldC: 'integer:2,5',
 }
 ```
 
 ### Tipo texto
 Todo el campo debe ser solo letras
+| Opcional | Descripción | type |
+| ------ | ------ | ------ | 
+| Cantidad | Indica el numeró de caracteres | integer |
+| Rango | Indica el numeró menor y menor de caracteres separados por < , > | integer |
 ```sh
 {
-    field: 'string'
+    fieldA: 'string',
+    fieldB: 'string:5',
+    fieldC: 'string:2,5',
 }
 ```
 
@@ -94,9 +106,15 @@ Todo el campo debe ser minúscula
 
 ### Mayúscula
 Todo el campo debe ser mayúscula
+| Opcional | Descripción | type |
+| ------ | ------ | ------ | 
+| Cantidad | Indica el numeró de caracteres | integer |
+| Rango | Indica el numeró menor y menor de caracteres separados por < , > | integer |
 ```sh
 {
-    field: 'uppercase'
+    fieldA: 'uppercase',
+    fieldB: 'uppercase:5',
+    fieldC: 'uppercase:2,5',
 }
 ```
 

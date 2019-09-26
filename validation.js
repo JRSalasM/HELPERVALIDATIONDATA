@@ -79,10 +79,10 @@ const typeValidate = (key,value) => {
             result = Vlength(value,key.rule);
             break;
         case 'integer':
-            result = Vnumeric(value);
+            result = Vnumeric(value, key.rule);
             break;
         case 'string':
-            result = Vstring(value);
+            result = Vstring(value, key.rule);
             break;
         case 'uppercase':
             result = Vuppecase(value, key.rule);
@@ -163,20 +163,64 @@ const Vregex = (value, condicional) => {
     return { valid: true};    
 }
 
-const Vnumeric = (value) => {
-    let regex_number = new RegExp('^[0-9]+(\.[0-9]{0,})?$');
-    if(!regex_number.test(value)){
+const Vnumeric = (value, condicional) => {
+    let regex = new RegExp('^[0-9]+(\.[0-9]{0,})?$');
+    if(!regex.test(value) || isNaN(value)){
         return { valid: false, err: `must be type numeric` }
-    }
-    return { valid: true};    
+    }else{
+        if(condicional){
+            let params = condicional.split(',');
+            if(params.length === 1){
+                let field = value.split('');
+                field = field.filter(e => regex.test(e) && e === e.trim());
+                if(field.length != condicional){
+                    return { valid: false, err: `must be ${condicional} characteres numeric` }    
+                }
+                return { valid: true};
+            }else if(params.length === 2){
+                let field = value.split('');
+                field = field.filter(e => regex.test(e) && e === e.trim());
+                if(field.length < params[0] || field.length > params[1]){
+                    return { valid: false, err: `must be ${params[0]} - ${params[1]} characteres numeric` }    
+                }
+                return { valid: true};
+            }else{
+                return { valid: false, log: `, condicional ${condicional} must be only 2 number` }
+            }
+        }else{
+            return { valid: true}; 
+        }  
+    }      
 }
 
-const Vstring = (value) => {
-    let regex_number = new RegExp('^[a-zA-Z ]+$');
-    if(!regex_number.test(value)){
+const Vstring = (value, condicional) => {
+    let regex = new RegExp('^[a-zA-Z ]+$');
+    if(!regex.test(value)){
         return { valid: false, err: `must be type string` }
+    }else{
+        if(condicional){
+            let params = condicional.split(',');
+            if(params.length === 1){
+                let field = value.split('');
+                field = field.filter(e => regex.test(e) && e === e.trim());
+                if(field.length != condicional){
+                    return { valid: false, err: `must be ${condicional} characteres string` }    
+                }
+                return { valid: true};
+            }else if(params.length === 2){
+                let field = value.split('');
+                field = field.filter(e => regex.test(e) && e === e.trim());
+                if(field.length < params[0] || field.length > params[1]){
+                    return { valid: false, err: `must be ${params[0]} - ${params[1]} characteres string` }    
+                }
+                return { valid: true};
+            }else{
+                return { valid: false, log: `, condicional ${condicional} must be only 2 number` }
+            }
+        }else{
+            return { valid: true}; 
+        }  
     }
-    return { valid: true};    
 }
 
 const Vuppecase = (value, condicional) => {
