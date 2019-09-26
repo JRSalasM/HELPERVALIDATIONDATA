@@ -141,7 +141,9 @@ El campo debe ser alfanumerico
 | ------ | ------ | ------ | 
 | lista | Indica el valor que NO puede tener el campo, van separados por < , > | string |
 ```sh
+let rules = ["valor1","valor2","valor3"];
 {
-    field: 'different:valor1,valor2,valor3'
+    fieldA: 'different:valor1,valor2,valor3',
+    fieldB: 'different:'+rules
 }
 ```

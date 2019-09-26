@@ -1,15 +1,16 @@
 const validation = require('./validation');
 
+let f = ['jose','eduardo'];
 let rules = {
     username:'required',
     password:'required',
-    fullname: 'required|string: 5,12'
+    type: 'required|containt:'+f
 }
-
+console.log(rules);
 let data = {
     username: 'Jose',
     password: 'd',
-    fullname: ''
+    type: 'jose',
 }
 
 let a = validation(data, rules);

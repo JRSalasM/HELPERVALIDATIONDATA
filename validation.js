@@ -290,6 +290,9 @@ const Valphanumeric = (value) => {
 }
 
 const Vcontaint = (value, condicional) => {
+    if(!condicional){
+        return { valid: false, log: `must have a value as parameter` }
+    }
     let params = condicional.split(',');
     let temp = params.filter( v => v === value);
     if(temp.length === 0){
@@ -299,6 +302,9 @@ const Vcontaint = (value, condicional) => {
 }
 
 const Vdifferent = (value, condicional) => {
+    if(!condicional){
+        return { valid: false, log: `must have a value as parameter` }
+    }
     let params = condicional.split(',');
     let temp = params.filter( v => v === value);
     if(temp.length !== 0){
