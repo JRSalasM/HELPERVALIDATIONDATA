@@ -34,7 +34,7 @@ console.log(a);
 ```
 
 ### Carácter minimo
-| Parametro | Descripción | type |
+| Opcional | Descripción | type |
 | ------ | ------ | ------ | 
 | Cantidad | Indica el numeró de caracteres minimos | integer |
 ```sh
@@ -44,7 +44,7 @@ console.log(a);
 ```
 
 ### Carácter maximo
-| Parametro | Descripción | type |
+| Opcional | Descripción | type |
 | ------ | ------ | ------ | 
 | Cantidad | Indica el numeró de caracteres máximos | integer |
 ```sh
@@ -54,7 +54,7 @@ console.log(a);
 ```
 
 ### Cantidad de caracteres
-| Parametro | Descripción | type |
+| Opcional | Descripción | type |
 | ------ | ------ | ------ | 
 | Cantidad | Indica el numeró de caracteres | integer |
 ```sh
@@ -103,7 +103,7 @@ El campo debe ser alfanumerico
 ```
 
 ### Valor entre
-| Parametro | Descripción | type |
+| Opcional | Descripción | type |
 | ------ | ------ | ------ | 
 | lista | Indica el valor que puede tener el campo, van separados por < , > | string |
 ```sh
@@ -113,7 +113,7 @@ El campo debe ser alfanumerico
 ```
 
 ### Valor diferente
-| Parametro | Descripción | type |
+| Opcional | Descripción | type |
 | ------ | ------ | ------ | 
 | lista | Indica el valor que NO puede tener el campo, van separados por < , > | string |
 ```sh
