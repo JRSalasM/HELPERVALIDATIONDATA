@@ -34,6 +34,9 @@ console.log(a);
 ```
 
 ### Carácter minimo
+| Parametro | Descripción | type |
+| ------ | ------ | ------ | 
+| Cantidad | Indica el numeró de caracteres minimos | integer |
 ```sh
 {
     field: 'min:5'
@@ -41,6 +44,9 @@ console.log(a);
 ```
 
 ### Carácter maximo
+| Parametro | Descripción | type |
+| ------ | ------ | ------ | 
+| Cantidad | Indica el numeró de caracteres máximos | integer |
 ```sh
 {
     field: 'max:5'
@@ -48,6 +54,9 @@ console.log(a);
 ```
 
 ### Cantidad de caracteres
+| Parametro | Descripción | type |
+| ------ | ------ | ------ | 
+| Cantidad | Indica el numeró de caracteres | integer |
 ```sh
 {
     field: 'length:5'
@@ -62,6 +71,7 @@ console.log(a);
 ```
 
 ### Tipo texto
+Todo el campo debe ser solo letras
 ```sh
 {
     field: 'string'
@@ -69,20 +79,33 @@ console.log(a);
 ```
 
 ### Minúscula
+Todo el campo debe ser minúscula
 ```sh
 {
     field: 'lowercase'
 }
 ```
 
+### Mayúscula
+Todo el campo debe ser mayúscula
+```sh
+{
+    field: 'uppercase'
+}
+```
+
 ### Letras y números
+El campo debe ser alfanumerico
 ```sh
 {
     field: 'alphanumeric'
 }
 ```
 
-### Valor entre 
+### Valor entre
+| Parametro | Descripción | type |
+| ------ | ------ | ------ | 
+| lista | Indica el valor que puede tener el campo, van separados por < , > | string |
 ```sh
 {
     field: 'containt:valor1,valor2,valor3'
@@ -90,6 +113,9 @@ console.log(a);
 ```
 
 ### Valor diferente
+| Parametro | Descripción | type |
+| ------ | ------ | ------ | 
+| lista | Indica el valor que NO puede tener el campo, van separados por < , > | string |
 ```sh
 {
     field: 'different:valor1,valor2,valor3'

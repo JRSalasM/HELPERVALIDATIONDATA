@@ -21,7 +21,7 @@ const validation = (values,rulesValidation) => {
                     let validations = validator.split('|');
                     let err = {},
                         log = {};
-                    validations.forEach((v,i)=>{
+                    validations.forEach((v,i) => {
                         if(v.includes(':')){
                             let temp = v.split(':');                        
                             if(temp.length !== 2){
@@ -33,9 +33,7 @@ const validation = (values,rulesValidation) => {
                             validations[i] = { type: v }
                         }
                     });
-                    if(data[value].value === '' &&  validations.filter(r => r.type === 'required' ).length === 0){
-                        console.log(`${value} no es requerido`);
-                    }else{
+                    if(!(data[value].value === '' &&  validations.filter(r => r.type === 'required' ).length === 0)){                    
                         validations.forEach((val)=>{           
                             let result = typeValidate(val,data[value].value);
                             if(!result.valid){
@@ -86,7 +84,7 @@ const typeValidate = (key,value) => {
         case 'string':
             result = Vstring(value);
             break;
-        case 'uppecase':
+        case 'uppercase':
             result = Vuppecase(value);
             break;
         case 'lowercase':

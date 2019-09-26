@@ -3,13 +3,13 @@ const validation = require('./validation');
 let rules = {
     username:'required',
     password:'required',
-    age: 'required|length:3|integer'
+    age: 'required|lowercase:0,2'
 }
 
 let data = {
     username: 'Jose',
     password: 'd',
-    age: '123'
+    age: 'dasdqe'
 }
 
 let a = validation(data, rules);
