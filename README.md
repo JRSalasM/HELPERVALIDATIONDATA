@@ -80,9 +80,15 @@ Todo el campo debe ser solo letras
 
 ### Minúscula
 Todo el campo debe ser minúscula
+| Opcional | Descripción | type |
+| ------ | ------ | ------ | 
+| Cantidad | Indica el numeró de caracteres | integer |
+| Rango | Indica el numeró menor y menor de caracteres separados por < , > | integer |
 ```sh
 {
-    field: 'lowercase'
+    fieldA: 'lowercase',
+    fieldB: 'lowercase:5',
+    fieldC: 'lowercase:2,5',
 }
 ```
 

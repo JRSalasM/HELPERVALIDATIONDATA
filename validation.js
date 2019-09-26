@@ -88,7 +88,7 @@ const typeValidate = (key,value) => {
             result = Vuppecase(value);
             break;
         case 'lowercase':
-            result = Vlowercase(value);
+            result = Vlowercase(value,key.rule);
             break;
         case 'alphanumeric':
             result = Valphanumeric(value);
@@ -187,12 +187,33 @@ const Vuppecase = (value) => {
     return { valid: true};
 }
 
-const Vlowercase = (value) => {
-    let regex_number = new RegExp('^[a-z ]+$');
-    if(!regex_number.test(value)){
-        return { valid: false, err: `must be lower case` }
-    }
-    return { valid: true};    
+const Vlowercase = (value, condicional) => {
+    let regex_number = new RegExp('^[a-z ]+$');    
+    if(condicional){
+        let params = condicional.split(',');
+        if(params.length === 1){
+            let field = value.split('');
+            field = field.filter(e => regex_number.test(e) && e === e.trim());
+            if(field.length != condicional){
+                return { valid: false, err: `must be ${condicional} characteres lower case` }    
+            }
+            return { valid: true};
+        }else if(params.length === 2){
+            let field = value.split('');
+            field = field.filter(e => regex_number.test(e) && e === e.trim());
+            if(field.length < params[0] || field.length > params[1]){
+                return { valid: false, err: `must be ${params[0]} -  ${params[1]} characteres lower case` }    
+            }
+            return { valid: true};
+        }else{
+            return { valid: false, log: `, condicional ${condicional} must be only 2 number` }
+        }
+    }else{    
+        if(!regex_number.test(value)){
+            return { valid: false, err: `must be lower case` }
+        }
+        return { valid: true};
+    }     
 }
 
 const Valphanumeric = (value) => {
